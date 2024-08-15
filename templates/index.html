@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Youtube Video Comment Scraper and Sentiment Analyser</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <style>
+
+        body {
+            background: linear-gradient(to bottom, #f8ccab 0%, #e0eefa 100%);
+            font-family: sans-serif; /* Add a clean font */
+            margin: 0;
+            padding: 20px; /* Add some padding */
+        }
+
+        h1 {
+            color: #f15252;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+
+    </style>
+</head>
+<body style="overflow-y: auto;">
+    <h1>YouTube Video Comment Scraping & Analysis of Positive and Negative Comments</h1>
+    <p>It takes approximately 5 to 6 minutes to scrape 1000 comments.<br>
+    The application needs time to scrape the comments of the video.<br>
+    Kindly wait for the process to finish.</p>
+
+    <form method="post" action="/scrap">
+        <label>Paste your YouTube video URL:</label><br>
+        <input type="text" name="youtube url" required><br><br>
+
+        <!--
+        <label>Type your email ID:</label><br>
+        <input type="text" name="user mail id"><br><br>
+        -->
+
+        <input type="submit" value="Scrape" id="scrape_button" onclick="$('#loading').show();"><br><br>
+    </form>
+
+    <div id="loading" style="display:none;">
+        <span style="--i:1">F</span>
+        <span style="--i:2">E</span>
+        <span style="--i:3">T</span>
+        <span style="--i:4">C</span>
+        <span style="--i:5">H</span>
+        <span style="--i:6">I</span>
+        <span style="--i:7">N</span>
+        <span style="--i:8">G&nbsp;</span>
+        <span style="--i:9">C</span>
+        <span style="--i:10">O</span>
+        <span style="--i:11">M</span>
+        <span style="--i:12">M</span>
+        <span style="--i:13">E</span>
+        <span style="--i:14">N</span>
+        <span style="--i:15">T</span>
+        <span style="--i:16">S</span>
+        <span style="--i:17">.</span>
+        <span style="--i:18">.</span>
+        <span style="--i:19">.</span>
+        <span style="--i:20">.</span>
+    </div>
+
+    <br>
+    {% if after_complete_message %}
+        <h3>{{ after_complete_message }}<br><br/>
+            <span class="res_mes">Video Title:</span>{{ title }}<br>
+            <span class="res_mes">Video Published by:</span>{{ owner }}<br>
+            <span class="res_mes">Total Comments :</span>{{ comment_w_replies }}<br>
+           
+        </h3>
+    {% endif %}<br>
+
+    <div class="positive-comments">
+        <h3><span class="pos_head">Positive Comments</span></h3>
+        {{ pos_comments_csv | safe }}
+    </div>
+    
+    <div class="negative-comments" style="overflow-x: auto;">
+        <h3><span class="neg_head">Negative Comments</span></h3>
+        {{ neg_comments_csv | safe }}
+    </div>
+</body>
+</html>
